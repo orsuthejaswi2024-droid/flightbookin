@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyFlow - Airline Booking & Management</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome for Premium Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- BG Gradient Accent Circles -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <!-- SUPABASE FALLBACK MODAL (shown if no env config or invalid key/url) -->
+    <div id="config-modal" class="modal-overlay hidden">
+        <div class="modal-card config-card glass">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-database text-primary"></i> Supabase Setup</h2>
+                <p class="modal-subtitle">We couldn't connect to Supabase. Enter your credentials or set them in the `.env` file.</p>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="db-url-input">Supabase Project URL</label>
+                    <input type="text" id="db-url-input" placeholder="https://your-project-id.supabase.co">
+                </div>
+                <div class="form-group">
+                    <label for="db-anon-input">Supabase Anon Key</label>
+                    <input type="password" id="db-anon-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...">
+                </div>
+                <div id="config-error" class="error-msg hidden">Please fill in both fields correctly.</div>
+            </div>
+            <div class="modal-footer">
+                <button id="save-config-btn" class="btn btn-primary btn-full">Save & Connect</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTAINER -->
+    <div class="app-container">
+
+        <!-- 1. LOGIN & ROLE SELECTION SCREEN -->
+        <section id="login-section" class="auth-wrapper">
+            <div class="auth-card glass animated-fade-in">
+                <div class="brand-header">
+                    <div class="logo">
+                        <i class="fa-solid fa-paper-plane logo-icon"></i>
+                        <span>SkyFlow</span>
+                    </div>
+                    <h1>Welcome Aboard</h1>
+                    <p class="subtitle">Please log in to manage or book your journeys</p>
+                </div>
+                
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="login-name">Your Full Name</label>
+                        <div class="input-wrapper">
+                            <i class="fa-regular fa-user input-icon"></i>
+                            <input type="text" id="login-name" required placeholder="Enter your name">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Select Your Profile</label>
+                        <div class="role-selector-group">
+                            <label class="role-option">
+                                <input type="radio" name="user-role" value="customer" checked>
+                                <div class="role-box">
+                                    <i class="fa-solid fa-user-tag role-icon"></i>
+                                    <span>Passenger</span>
+                                </div>
+                            </label>
+                            <label class="role-option">
+                                <input type="radio" name="user-role" value="employee">
+                                <div class="role-box">
+                                    <i class="fa-solid fa-clipboard-user role-icon"></i>
+                                    <span>Airline Staff</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Airline Select (Hidden for Customer, visible for Staff) -->
+                    <div id="airline-select-group" class="form-group hidden slide-down">
+                        <label for="login-airline">Select Your Airline Company</label>
+                        <div class="input-wrapper">
+                            <i class="fa-solid fa-plane-departure input-icon"></i>
+                            <select id="login-airline">
+                                <option value="Indigo">Indigo</option>
+                                <option value="Air India">Air India</option>
+                                <option value="Vistara">Vistara</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full btn-lg">
+                        <span>Initialize Session</span>
+                        <i class="fa-solid fa-arrow-right btn-arrow"></i>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 2. NAVBAR (Shown after login) -->
+        <nav id="main-nav" class="navbar glass hidden">
+            <div class="nav-left">
+                <div class="logo">
+                    <i class="fa-solid fa-paper-plane logo-icon"></i>
+                    <span>SkyFlow</span>
+                </div>
+                <div class="nav-divider"></div>
+                <div id="nav-brand-badge" class="brand-badge">Indigo Staff</div>
+            </div>
+            <div class="nav-right">
+                <div class="user-profile">
+                    <span id="nav-username" class="username">Guest User</span>
+                    <span id="nav-user-role-lbl" class="role-label">Passenger</span>
+                </div>
+                <button id="logout-btn" class="btn btn-icon" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- 3. CUSTOMER DASHBOARD -->
+        <main id="customer-dashboard" class="dashboard-wrapper hidden">
+            <!-- Tabs -->
+            <div class="tabs-container">
+                <button class="tab-btn active" data-tab="search-flights-tab">
+                    <i class="fa-solid fa-magnifying-glass"></i> Find & Book Flights
+                </button>
+                <button class="tab-btn" data-tab="my-bookings-tab" id="my-bookings-tab-btn">
+                    <i class="fa-solid fa-ticket"></i> My Bookings <span id="booking-badge" class="badge hidden">0</span>
+                </button>
+            </div>
+
+            <!-- Tab Content 1: Search & Book -->
+            <div id="search-flights-tab" class="tab-content active">
+                <div class="dashboard-grid">
+                    <!-- Flight Search Side Card -->
+                    <div class="grid-sidebar">
+                        <div class="card glass search-card">
+                            <h3><i class="fa-solid fa-plane-up text-primary"></i> Search Flights</h3>
+                            <form id="search-form">
+                                <div class="form-group">
+                                    <label for="search-origin">Origin Place</label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-location-crosshairs input-icon"></i>
+                                        <select id="search-origin">
+                                            <option value="">Any Origin</option>
+                                            <option value="Delhi">Delhi</option>
+                                            <option value="Mumbai">Mumbai</option>
+                                            <option value="Bangalore">Bangalore</option>
+                                            <option value="Chennai">Chennai</option>
+                                            <option value="Kolkata">Kolkata</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="search-destination">Destination</label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-location-dot input-icon"></i>
+                                        <select id="search-destination">
+                                            <option value="">Any Destination</option>
+                                            <option value="Delhi">Delhi</option>
+                                            <option value="Mumbai">Mumbai</option>
+                                            <option value="Bangalore">Bangalore</option>
+                                            <option value="Chennai">Chennai</option>
+                                            <option value="Kolkata">Kolkata</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-full">
+                                    <i class="fa-solid fa-plane-departure"></i> Search Flights
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Flights List -->
+                    <div class="grid-main">
+                        <div class="flights-header">
+                            <h2>Available Flights</h2>
+                            <p id="search-summary">Displaying all scheduled flights.</p>
+                        </div>
+                        <div id="flights-list" class="flights-list-grid">
+                            <!-- Dynamic Flight Cards go here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Content 2: My Bookings -->
+            <div id="my-bookings-tab" class="tab-content">
+                <div class="bookings-header">
+                    <h2>Your Booked Flights</h2>
+                    <p>Enter your name to view, access, or cancel your boarding passes.</p>
+                </div>
+                <div id="bookings-list" class="boarding-passes-grid">
+                    <!-- Dynamic Boarding Passes go here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- 4. AIRLINE EMPLOYEE DASHBOARD -->
+        <main id="employee-dashboard" class="dashboard-wrapper hidden">
+            <!-- Stats Summary -->
+            <div class="stats-row">
+                <div class="stat-card glass">
+                    <div class="stat-icon"><i class="fa-solid fa-plane"></i></div>
+                    <div class="stat-info">
+                        <h4 id="stat-total-flights">0</h4>
+                        <p>Active Flights</p>
+                    </div>
+                </div>
+                <div class="stat-card glass">
+                    <div class="stat-icon"><i class="fa-solid fa-users"></i></div>
+                    <div class="stat-info">
+                        <h4 id="stat-passengers">0</h4>
+                        <p>Total Bookings</p>
+                    </div>
+                </div>
+                <div class="stat-card glass">
+                    <div class="stat-icon"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+                    <div class="stat-info">
+                        <h4 id="stat-revenue">₹0</h4>
+                        <p>Gross Revenue</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Schedule Flight Form Card -->
+                <div class="grid-sidebar">
+                    <div class="card glass">
+                        <h3><i class="fa-solid fa-calendar-plus text-primary"></i> Schedule New Flight</h3>
+                        <form id="schedule-flight-form">
+                            <div class="form-group">
+                                <label for="flight-number-input">Flight Number</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-solid fa-hashtag input-icon"></i>
+                                    <input type="text" id="flight-number-input" required placeholder="e.g. 6E-104">
+                                </div>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="flight-origin-input">From</label>
+                                    <div class="input-wrapper">
+                                        <select id="flight-origin-input" required>
+                                            <option value="">Select Origin</option>
+                                            <option value="Delhi">Delhi</option>
+                                            <option value="Mumbai">Mumbai</option>
+                                            <option value="Bangalore">Bangalore</option>
+                                            <option value="Chennai">Chennai</option>
+                                            <option value="Kolkata">Kolkata</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="flight-dest-input">To</label>
+                                    <div class="input-wrapper">
+                                        <select id="flight-dest-input" required>
+                                            <option value="">Select Destination</option>
+                                            <option value="Delhi">Delhi</option>
+                                            <option value="Mumbai">Mumbai</option>
+                                            <option value="Bangalore">Bangalore</option>
+                                            <option value="Chennai">Chennai</option>
+                                            <option value="Kolkata">Kolkata</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="flight-price-input">Price (INR)</label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-indian-rupee-sign input-icon"></i>
+                                        <input type="number" id="flight-price-input" min="500" required placeholder="5000">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="flight-seats-input">Seats</label>
+                                    <div class="input-wrapper">
+                                        <i class="fa-solid fa-chair input-icon"></i>
+                                        <input type="number" id="flight-seats-input" min="10" max="60" value="60" required placeholder="60">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="flight-time-input">Departure Time</label>
+                                <div class="input-wrapper">
+                                    <i class="fa-regular fa-clock input-icon"></i>
+                                    <input type="datetime-local" id="flight-time-input" required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full">
+                                <i class="fa-solid fa-circle-plus"></i> Schedule Flight
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Flight Manifests / Flights & Bookings Tables -->
+                <div class="grid-main">
+                    <div class="employee-tabs-container">
+                        <button class="employee-tab-btn active" data-emp-tab="emp-flights-tab">
+                            <i class="fa-solid fa-plane-up"></i> Our Scheduled Flights
+                        </button>
+                        <button class="employee-tab-btn" data-emp-tab="emp-bookings-tab">
+                            <i class="fa-solid fa-users"></i> Booked Customers Manifest
+                        </button>
+                    </div>
+
+                    <!-- Scheduled Flights Table -->
+                    <div id="emp-flights-tab" class="employee-tab-content active">
+                        <div class="table-container glass">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Flight No</th>
+                                        <th>Route</th>
+                                        <th>Departure Time</th>
+                                        <th>Price</th>
+                                        <th>Available Seats</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="emp-flights-tbody">
+                                    <!-- Dynamic rows go here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Passenger Manifest Table -->
+                    <div id="emp-bookings-tab" class="employee-tab-content">
+                        <div class="table-container glass">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Passenger Name</th>
+                                        <th>Flight No</th>
+                                        <th>Route</th>
+                                        <th>Seat Number</th>
+                                        <th>Booking Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="emp-bookings-tbody">
+                                    <!-- Dynamic rows go here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- SEAT BOOKING SELECTION MODAL -->
+    <div id="seat-modal" class="modal-overlay hidden">
+        <div class="modal-card seat-card-modal glass animated-scale-up">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-chair text-primary"></i> Select Your Seat</h2>
+                <button class="close-modal-btn" id="close-seat-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="flight-route-info">
+                    <span id="seat-modal-flight-no" class="badge">6E-101</span>
+                    <span id="seat-modal-route">Delhi to Mumbai</span>
+                </div>
+                
+                <!-- Plane cabin wrapper -->
+                <div class="plane-cabin">
+                    <div class="cabin-front">
+                        <div class="cockpit-window"></div>
+                        <div class="flight-class-label">Economy Class Cabin</div>
+                    </div>
+
+                    <!-- Seat Legend -->
+                    <div class="seat-legend">
+                        <div class="legend-item"><span class="seat-box seat-available"></span> Available</div>
+                        <div class="legend-item"><span class="seat-box seat-selected"></span> Selected</div>
+                        <div class="legend-item"><span class="seat-box seat-occupied"></span> Booked</div>
+                    </div>
+
+                    <!-- Seat Map Grid -->
+                    <div class="seat-grid-container">
+                        <div class="seat-col-labels">
+                            <span>A</span>
+                            <span>B</span>
+                            <span>C</span>
+                            <span></span>
+                            <span>D</span>
+                            <span>E</span>
+                            <span>F</span>
+                        </div>
+                        <div id="seats-layout-grid" class="seats-layout-grid">
+                            <!-- Seats populated dynamically by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="selected-seat-summary">
+                    <p>Selected Seat: <strong id="selected-seat-badge" class="text-primary">-</strong></p>
+                    <p>Ticket Price: <strong id="seat-modal-price" class="text-success">₹0.00</strong></p>
+                </div>
+                <button id="confirm-booking-btn" class="btn btn-success btn-lg" disabled>
+                    <i class="fa-solid fa-check"></i> Confirm Booking
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Supabase JS Client CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- App Logic -->
+    <script src="app.js"></script>
+</body>
+</html>

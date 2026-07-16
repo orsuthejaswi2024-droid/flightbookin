@@ -1,0 +1,12 @@
+# Local configuration file containing sensitive API keys
+.env
+
+# Python build artifacts and caching
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Operating system files
+.DS_Store
+Thumbs.db
