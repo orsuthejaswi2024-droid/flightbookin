@@ -5,33 +5,33 @@
 
 /* Reset & Variables */
 :root {
-    /* Base Color Tokens (Dark Theme Defaults) */
-    --bg-dark: #0b0f19;
-    --bg-card: rgba(21, 32, 54, 0.7);
-    --bg-card-hover: rgba(29, 43, 71, 0.85);
-    --border-color: rgba(255, 255, 255, 0.08);
-    --border-color-focus: rgba(37, 99, 235, 0.4);
+    /* Base Color Tokens (Light White & Blue Theme) */
+    --bg-dark: #f0f4f8;
+    --bg-card: rgba(255, 255, 255, 0.85);
+    --bg-card-hover: rgba(255, 255, 255, 0.98);
+    --border-color: rgba(37, 99, 235, 0.1);
+    --border-color-focus: rgba(37, 99, 235, 0.5);
     
-    --text-main: #f3f4f6;
-    --text-muted: #9ca3af;
-    --text-link: #3b82f6;
+    --text-main: #0f172a;
+    --text-muted: #475569;
+    --text-link: #1d4ed8;
 
-    /* Theme Primary Colors - Defaults to Indigo */
+    /* Theme Primary Colors */
     --primary: #2563eb;
     --primary-hover: #1d4ed8;
-    --primary-glow: rgba(37, 99, 235, 0.25);
+    --primary-glow: rgba(37, 99, 235, 0.15);
     
-    --success: #10b981;
-    --success-hover: #059669;
-    --success-glow: rgba(16, 185, 129, 0.2);
+    --success: #059669;
+    --success-hover: #047857;
+    --success-glow: rgba(5, 150, 105, 0.15);
     
-    --danger: #f43f5e;
-    --danger-hover: #e11d48;
-    --danger-glow: rgba(244, 63, 94, 0.25);
+    --danger: #e11d48;
+    --danger-hover: #be123c;
+    --danger-glow: rgba(225, 29, 72, 0.15);
 
-    --warning: #f59e0b;
+    --warning: #d97706;
     
-    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --card-shadow: 0 10px 25px -5px rgba(37, 99, 235, 0.08), 0 8px 10px -6px rgba(37, 99, 235, 0.04);
     --transition-speed: 0.25s;
     --font-outfit: 'Outfit', sans-serif;
     --font-jakarta: 'Plus Jakarta Sans', sans-serif;
@@ -78,14 +78,14 @@ body {
     height: 8px;
 }
 ::-webkit-scrollbar-track {
-    background: rgba(11, 15, 25, 0.5);
+    background: rgba(240, 244, 255, 0.5);
 }
 ::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(37, 99, 235, 0.2);
     border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(37, 99, 235, 0.35);
 }
 
 /* BG Glowing Accent Blobs */
@@ -97,19 +97,19 @@ body {
     filter: blur(140px);
     z-index: -1;
     pointer-events: none;
-    opacity: 0.45;
+    opacity: 0.25;
 }
 
 .bg-glow-1 {
     top: -200px;
     left: -200px;
-    background: radial-gradient(circle, var(--primary) 0%, rgba(0,0,0,0) 70%);
+    background: radial-gradient(circle, var(--primary) 0%, rgba(255,255,255,0) 70%);
 }
 
 .bg-glow-2 {
     bottom: -200px;
     right: -200px;
-    background: radial-gradient(circle, #8b5cf6 0%, rgba(0,0,0,0) 70%);
+    background: radial-gradient(circle, #8b5cf6 0%, rgba(255,255,255,0) 70%);
 }
 
 /* Core Layout Wrapper */
@@ -131,8 +131,8 @@ h1, h2, h3, h4, h5, h6 {
 /* Glassmorphism utility card */
 .glass {
     background: var(--bg-card);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--border-color);
     box-shadow: var(--card-shadow);
     border-radius: 16px;
@@ -140,7 +140,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .glass:hover {
-    border-color: rgba(255, 255, 255, 0.14);
+    border-color: rgba(37, 99, 235, 0.2);
 }
 
 /* Inputs & Form Styling */
@@ -177,7 +177,7 @@ input[type="datetime-local"],
 select {
     width: 100%;
     padding: 13px 16px 13px 44px;
-    background-color: rgba(11, 15, 25, 0.6);
+    background-color: rgba(255, 255, 255, 0.9);
     border: 1px solid var(--border-color);
     border-radius: 10px;
     color: var(--text-main);
@@ -189,7 +189,7 @@ select {
 /* Select element adjustment when no icon is needed, but we keep format uniform */
 select {
     appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23475569'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 14px center;
     background-size: 16px;
@@ -199,7 +199,7 @@ select {
 input:focus, select:focus {
     border-color: var(--primary);
     box-shadow: 0 0 0 3px var(--primary-glow);
-    background-color: rgba(11, 15, 25, 0.8);
+    background-color: #ffffff;
 }
 
 .form-grid {
@@ -314,7 +314,7 @@ input:focus, select:focus {
     font-family: var(--font-outfit);
     font-size: 1.8rem;
     font-weight: 800;
-    color: white;
+    color: var(--primary);
 }
 
 .logo-icon {
@@ -331,7 +331,7 @@ input:focus, select:focus {
 .brand-header h1 {
     font-size: 2rem;
     margin-top: 15px;
-    color: white;
+    color: var(--text-main);
 }
 
 .subtitle {
@@ -363,7 +363,7 @@ input:focus, select:focus {
     justify-content: center;
     gap: 12px;
     padding: 20px 15px;
-    background-color: rgba(11, 15, 25, 0.5);
+    background-color: rgba(255, 255, 255, 0.6);
     border: 1px solid var(--border-color);
     border-radius: 12px;
     transition: all var(--transition-speed) ease;
@@ -390,7 +390,7 @@ input:focus, select:focus {
 
 .role-option input[type="radio"]:checked + .role-box .role-icon,
 .role-option input[type="radio"]:checked + .role-box span {
-    color: white;
+    color: var(--primary);
 }
 
 /* Navigation Bar */
@@ -423,15 +423,16 @@ input:focus, select:focus {
     text-transform: uppercase;
     padding: 5px 12px;
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    background: rgba(37, 99, 235, 0.05);
+    color: var(--primary);
 }
 
 .username {
     display: block;
     font-weight: 600;
     font-size: 0.95rem;
-    color: white;
+    color: var(--text-main);
 }
 
 .role-label {
@@ -472,11 +473,11 @@ input:focus, select:focus {
 }
 
 .tab-btn:hover {
-    color: white;
+    color: var(--primary);
 }
 
 .tab-btn.active {
-    color: white;
+    color: var(--primary);
 }
 
 .tab-btn.active::after {
@@ -488,7 +489,7 @@ input:focus, select:focus {
     height: 3px;
     background-color: var(--primary);
     border-radius: 3px 3px 0 0;
-    box-shadow: 0 -2px 10px var(--primary);
+    box-shadow: 0 -2px 10px var(--primary-glow);
 }
 
 .tab-content {
@@ -536,7 +537,7 @@ input:focus, select:focus {
 .card h3 {
     font-size: 1.25rem;
     margin-bottom: 20px;
-    color: white;
+    color: var(--text-main);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -549,7 +550,7 @@ input:focus, select:focus {
 
 .flights-header h2 {
     font-size: 1.6rem;
-    color: white;
+    color: var(--text-main);
 }
 
 .flights-header p {
@@ -597,27 +598,27 @@ input:focus, select:focus {
 }
 
 .airline-pill.indigo-pill {
-    background-color: rgba(37, 99, 235, 0.15);
-    color: #3b82f6;
-    border: 1px solid rgba(37, 99, 235, 0.3);
+    background-color: rgba(37, 99, 235, 0.1);
+    color: #1d4ed8;
+    border: 1px solid rgba(37, 99, 235, 0.2);
 }
 
 .airline-pill.airindia-pill {
-    background-color: rgba(239, 68, 68, 0.15);
-    color: #ef4444;
-    border: 1px solid rgba(239, 68, 68, 0.3);
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #b91c1c;
+    border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 .airline-pill.vistara-pill {
-    background-color: rgba(139, 92, 246, 0.15);
-    color: #a78bfa;
-    border: 1px solid rgba(139, 92, 246, 0.3);
+    background-color: rgba(139, 92, 246, 0.1);
+    color: #6d28d9;
+    border: 1px solid rgba(139, 92, 246, 0.2);
 }
 
 .flight-number {
     font-size: 1.1rem;
     font-weight: 700;
-    color: white;
+    color: var(--text-main);
     font-family: var(--font-outfit);
 }
 
@@ -635,7 +636,7 @@ input:focus, select:focus {
 .route-node h4 {
     font-size: 1.5rem;
     font-weight: 800;
-    color: white;
+    color: var(--text-main);
 }
 
 .route-node p {
@@ -656,7 +657,7 @@ input:focus, select:focus {
 .route-line {
     width: 100%;
     height: 1px;
-    border-bottom: 2px dashed rgba(255, 255, 255, 0.2);
+    border-bottom: 2px dashed rgba(37, 99, 235, 0.2);
     position: relative;
 }
 
@@ -669,7 +670,7 @@ input:focus, select:focus {
     left: calc(50% - 7px);
     transform: rotate(45deg);
     color: var(--primary);
-    background-color: #121928;
+    background-color: #ffffff;
     padding: 0 4px;
     font-size: 0.85rem;
 }
@@ -698,7 +699,7 @@ input:focus, select:focus {
 .flight-price {
     font-size: 1.6rem;
     font-weight: 800;
-    color: white;
+    color: var(--primary);
     font-family: var(--font-outfit);
 }
 
@@ -718,7 +719,7 @@ input:focus, select:focus {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(5, 8, 16, 0.8);
+    background-color: rgba(15, 23, 42, 0.4);
     backdrop-filter: blur(8px);
     z-index: 1000;
     display: flex;
@@ -741,7 +742,7 @@ input:focus, select:focus {
 
 .modal-header h2 {
     font-size: 1.5rem;
-    color: white;
+    color: var(--text-main);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -801,14 +802,14 @@ input:focus, select:focus {
 
 /* Airplane visual structure */
 .plane-cabin {
-    background: rgba(255, 255, 255, 0.03);
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    background: rgba(37, 99, 235, 0.02);
+    border: 2px solid rgba(37, 99, 235, 0.12);
     border-radius: 40px 40px 15px 15px;
     padding: 25px;
     margin: 20px auto;
     max-width: 380px;
     position: relative;
-    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 0 0 20px rgba(37, 99, 235, 0.05);
 }
 
 .cabin-front {
@@ -878,8 +879,8 @@ input:focus, select:focus {
 .seat-box {
     aspect-ratio: 1;
     border-radius: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(37, 99, 235, 0.15);
+    background-color: rgba(37, 99, 235, 0.03);
     cursor: pointer;
     font-size: 0.68rem;
     font-weight: 600;
@@ -898,27 +899,27 @@ input:focus, select:focus {
 }
 
 .seat-available {
-    border-color: rgba(16, 185, 129, 0.4);
-    background-color: rgba(16, 185, 129, 0.06);
+    border-color: rgba(5, 150, 105, 0.3);
+    background-color: rgba(5, 150, 105, 0.05);
 }
 
 .seat-available:hover {
-    background-color: rgba(16, 185, 129, 0.2);
+    background-color: rgba(5, 150, 105, 0.15);
     border-color: var(--success);
     box-shadow: 0 0 8px var(--success-glow);
 }
 
 .seat-selected {
     background-color: var(--primary) !important;
-    border-color: white !important;
+    border-color: var(--primary) !important;
     color: white !important;
-    box-shadow: 0 0 10px white;
+    box-shadow: 0 0 10px var(--primary-glow);
 }
 
 .seat-occupied {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
-    color: rgba(255, 255, 255, 0.2) !important;
+    background-color: rgba(15, 23, 42, 0.05) !important;
+    border-color: rgba(15, 23, 42, 0.1) !important;
+    color: rgba(15, 23, 42, 0.15) !important;
     cursor: not-allowed !important;
     transform: none !important;
     box-shadow: none !important;
@@ -931,7 +932,7 @@ input:focus, select:focus {
     position: absolute;
     width: 140%;
     height: 1px;
-    background-color: rgba(255, 255, 255, 0.12);
+    background-color: rgba(15, 23, 42, 0.1);
     transform: rotate(45deg);
 }
 
@@ -986,7 +987,7 @@ input:focus, select:focus {
     display: flex;
     flex-direction: column;
     border: 1px solid var(--border-color);
-    background: linear-gradient(135deg, rgba(21, 32, 54, 0.8) 0%, rgba(13, 20, 35, 0.9) 100%);
+    background: linear-gradient(135deg, #ffffff 0%, #f0f4ff 100%);
     border-radius: 16px;
     overflow: hidden;
     position: relative;
@@ -1054,7 +1055,7 @@ input:focus, select:focus {
 .pass-node h3 {
     font-size: 1.8rem;
     font-weight: 800;
-    color: white;
+    color: var(--text-main);
 }
 
 .pass-node p {
@@ -1072,7 +1073,7 @@ input:focus, select:focus {
     content: '\f072';
     font-family: 'Font Awesome 6 Free';
     font-weight: 900;
-    color: rgba(255, 255, 255, 0.25);
+    color: rgba(37, 99, 235, 0.2);
     font-size: 1.2rem;
 }
 
@@ -1080,7 +1081,7 @@ input:focus, select:focus {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-top: 1px solid rgba(37, 99, 235, 0.1);
     padding-top: 15px;
 }
 
@@ -1095,16 +1096,16 @@ input:focus, select:focus {
 .pass-detail-item span {
     font-weight: 600;
     font-size: 0.95rem;
-    color: white;
+    color: var(--text-main);
 }
 
 .pass-footer {
-    border-top: 1px dashed rgba(255, 255, 255, 0.15);
+    border-top: 1px dashed rgba(37, 99, 235, 0.15);
     padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(37, 99, 235, 0.04);
     min-height: 70px;
 }
 
@@ -1157,12 +1158,12 @@ input:focus, select:focus {
     align-items: center;
     justify-content: center;
     font-size: 1.3rem;
-    color: white;
+    color: var(--primary);
 }
 
 .stat-info h4 {
     font-size: 1.6rem;
-    color: white;
+    color: var(--text-main);
 }
 
 .stat-info p {
@@ -1177,7 +1178,7 @@ input:focus, select:focus {
 }
 
 .employee-tab-btn {
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.8);
     border: 1px solid var(--border-color);
     padding: 12px 20px;
     border-radius: 8px;
@@ -1192,8 +1193,8 @@ input:focus, select:focus {
 }
 
 .employee-tab-btn:hover {
-    background: rgba(255, 255, 255, 0.08);
-    color: white;
+    background: rgba(37, 99, 235, 0.05);
+    color: var(--primary);
 }
 
 .employee-tab-btn.active {
@@ -1227,11 +1228,11 @@ table {
 
 th, td {
     padding: 16px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(37, 99, 235, 0.08);
 }
 
 th {
-    background-color: rgba(255, 255, 255, 0.03);
+    background-color: rgba(37, 99, 235, 0.04);
     color: var(--text-muted);
     font-family: var(--font-outfit);
     font-weight: 600;
@@ -1242,7 +1243,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-    background-color: rgba(255, 255, 255, 0.02);
+    background-color: rgba(37, 99, 235, 0.02);
 }
 
 td {
@@ -1282,12 +1283,12 @@ td {
 }
 
 .toast {
-    background-color: rgba(13, 20, 35, 0.95);
+    background-color: rgba(255, 255, 255, 0.98);
     border: 1px solid var(--border-color);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.1);
     padding: 15px 25px;
     border-radius: 10px;
-    color: white;
+    color: var(--text-main);
     font-size: 0.9rem;
     font-weight: 500;
     display: flex;
